@@ -13,5 +13,11 @@ export default {
   },
   setUserToken(state, token) {
     state.user.token = token
+  },
+  addError(state, error) {
+    state.errors.push(error)
+  },
+  clearErrors(state) {
+    state.errors = []
   }
 }

@@ -3,7 +3,9 @@ import {
   SET_USER_FULL_NAME,
   SET_USER_NAME,
   SET_USER_PASSWORD,
-  SET_USER_TOKEN
+  SET_USER_TOKEN,
+  ADD_ERROR,
+  CLEAR_ERRORS
 } from './constants'
 
 export default {
@@ -21,5 +23,11 @@ export default {
   },
   setUserToken({ commit }, token) {
     commit(SET_USER_TOKEN, token)
+  },
+  addError({ commit }, error) {
+    commit(ADD_ERROR, error)
+  },
+  clearErrors({ commit }) {
+    commit(CLEAR_ERRORS)
   }
 }

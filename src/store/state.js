@@ -5,5 +5,6 @@ export default {
     password: '',
     fullname: '',
     token: ''
-  }
+  },
+  errors: []
 }

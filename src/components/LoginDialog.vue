@@ -2,15 +2,16 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-form v-on:submit.prevent="authenticate">
       <v-card>
-        <v-card-title>LoginDialog</v-card-title>
+        <v-card-title>Login</v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
+              <label>Please enter your credentials and click 'Submit' to continue</label>
               <v-text-field label="Username" v-model="username" required></v-text-field>
               <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
             </v-layout>
           </v-container>
-          {{message}}
+          <v-alert type="error" :value="showErrors">An error occurred.</v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -27,7 +28,9 @@ import {
   SHOW_LOGIN,
   SET_USER_NAME,
   SET_USER_PASSWORD,
-  SET_USER_TOKEN
+  SET_USER_TOKEN,
+  ADD_ERROR,
+  CLEAR_ERRORS
 } from '../store/constants'
 
 export default {
@@ -73,6 +76,9 @@ export default {
     canSubmit() {
       const user = this.$store.state.user
       return user.username && user.password
+    },
+    showErrors() {
+      return this.$store.state.errors.length
     }
   },
   methods: {
@@ -102,12 +108,16 @@ export default {
         .then(payload => {
           this.token = payload.token
           this.password = ''
+          this.$store.dispatch(CLEAR_ERRORS, {})
         })
         .catch(err => {
           console.log(err)
+          this.$store.dispatch(ADD_ERROR, err)
         })
         .finally(() => {
-          this.toggleDialog()
+          if (!this.showErrors) {
+            this.toggleDialog()
+          }
         })
     }
   }
