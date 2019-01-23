@@ -10,5 +10,8 @@ export default {
   },
   setUserFullname(state, fullname) {
     state.user.fullname = fullname
+  },
+  setUserToken(state, token) {
+    state.user.token = token
   }
 }

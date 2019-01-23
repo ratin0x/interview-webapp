@@ -1,26 +1,35 @@
 <template>
   <v-dialog v-model="dialog" max-width="450px">
-    <v-card>
-      <v-card-title>LoginDialog</v-card-title>
-      <v-card-text>
-        <v-container grid-list-md>
-          <v-layout wrap>
-            <v-text-field label="Username" v-model="username" required></v-text-field>
-            <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
-          </v-layout>
-        </v-container>
-        {{message}}
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="toggleDialog">Cancel</v-btn>
-        <v-btn @click="authenticate" :disabled="!canSubmit">Submit</v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-form v-on:submit.prevent="authenticate">
+      <v-card>
+        <v-card-title>LoginDialog</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-text-field label="Username" v-model="username" required></v-text-field>
+              <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
+            </v-layout>
+          </v-container>
+          {{message}}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="toggleDialog">Cancel</v-btn>
+          <v-btn :disabled="!canSubmit" type="submit">Submit</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
 <script>
+import {
+  SHOW_LOGIN,
+  SET_USER_NAME,
+  SET_USER_PASSWORD,
+  SET_USER_TOKEN
+} from '../store/constants'
+
 export default {
   name: 'LoginDialog',
   props: {
@@ -34,7 +43,7 @@ export default {
         return this.$props.visible
       },
       set: function(newValue) {
-        this.$store.dispatch('showLogin', newValue)
+        this.$store.dispatch(SHOW_LOGIN, newValue)
       }
     },
     username: {
@@ -42,7 +51,7 @@ export default {
         return this.$store.state.user.username
       },
       set: function(newUsername) {
-        this.$store.dispatch('setUsername', newUsername)
+        this.$store.dispatch(SET_USER_NAME, newUsername)
       }
     },
     password: {
@@ -50,7 +59,15 @@ export default {
         return this.$store.state.user.password
       },
       set: function(newPassword) {
-        this.$store.dispatch('setUserPassword', newPassword)
+        this.$store.dispatch(SET_USER_PASSWORD, newPassword)
+      }
+    },
+    token: {
+      get: function() {
+        return this.$store.state.user.token
+      },
+      set: function(newToken) {
+        this.$store.dispatch(SET_USER_TOKEN, newToken)
       }
     },
     canSubmit() {
@@ -68,7 +85,30 @@ export default {
           this.authUrl
         }`
       )
-      this.toggleDialog()
+      const postData = {
+        username: this.username,
+        password: this.password
+      }
+      fetch(this.authUrl, {
+        method: 'POST',
+        body: JSON.stringify(postData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(payload => {
+          this.token = payload.token
+          this.password = ''
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .finally(() => {
+          this.toggleDialog()
+        })
     }
   }
 }

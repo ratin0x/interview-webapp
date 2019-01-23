@@ -1,0 +1,5 @@
+export const SHOW_LOGIN = 'showLogin'
+export const SET_USER_NAME = 'setUsername'
+export const SET_USER_PASSWORD = 'setUserPassword'
+export const SET_USER_FULL_NAME = 'setUserFullname'
+export const SET_USER_TOKEN = 'setUserToken'

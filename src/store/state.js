@@ -3,6 +3,7 @@ export default {
   user: {
     username: '',
     password: '',
-    fullname: ''
+    fullname: '',
+    token: ''
   }
 }

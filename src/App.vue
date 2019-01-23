@@ -16,7 +16,7 @@
     </v-toolbar>
 
     <v-content>
-      <Message :title="title" :message="msg"/>
+      <Message :title="title" :message="message"/>
       <LoginDialog :visible="this.showLoginDialog" message="Login Form Here" :authUrl="this.authUrl"></LoginDialog>
     </v-content>
   </v-app>
@@ -34,16 +34,28 @@ export default {
   },
   data() {
     return {
-      title: 'Welcome',
-      msg: 'Please login to proceed'
+      title: 'Welcome'
     }
   },
   computed: {
     authUrl() {
-      return process.env.VUE_APP_AUTH_HOST + ':' + process.env.VUE_APP_AUTH_PORT
+      return (
+        process.env.VUE_APP_AUTH_HOST +
+        ':' +
+        process.env.VUE_APP_AUTH_PORT +
+        process.env.VUE_APP_AUTH_ENDPOINT
+      )
     },
     showLoginDialog() {
       return this.$store.state.showLoginDialog
+    },
+    message() {
+      const user = this.$store.state.user
+      if (user.token) {
+        return `Thank you for logging in, ${user.username}.`
+      } else {
+        return 'Please login to proceed'
+      }
     }
   },
   methods: {
