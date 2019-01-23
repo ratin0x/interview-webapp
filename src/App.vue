@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Root msg="Webapp Root"/>
-  </div>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Interview</span>
+        <span class="font-weight-light">&nbsp;WebApp</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        flat
+        :href="authUrl"
+        target="_blank"
+      >
+        <span class="mr-2">Login</span>
+      </v-btn>
+    </v-toolbar>
+
+    <v-content>
+      <Message :message="msg"/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import Root from './components/Root.vue'
+import Message from './components/Message'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    Root
+    Message
+  },
+  data: () => {
+    return {
+      msg: 'Please login to proceed'
+    }
+  },
+  computed: {
+    authUrl() {
+      return process.env.VUE_APP_AUTH_HOST + ':' + process.env.VUE_APP_AUTH_PORT
+    }
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
