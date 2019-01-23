@@ -17,7 +17,7 @@
 
     <v-content>
       <Message :title="title" :message="msg"/>
-      <LoginDialog :visible="this.showLoginDialog" message="Login Form Here"></LoginDialog>
+      <LoginDialog :visible="this.showLoginDialog" message="Login Form Here" :authUrl="this.authUrl"></LoginDialog>
     </v-content>
   </v-app>
 </template>

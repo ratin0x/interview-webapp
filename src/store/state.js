@@ -1,3 +1,8 @@
 export default {
-  showLoginDialog: false
+  showLoginDialog: false,
+  user: {
+    username: '',
+    password: '',
+    fullname: ''
+  }
 }
