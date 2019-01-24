@@ -11,12 +11,12 @@
               <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
             </v-layout>
           </v-container>
-          <v-alert type="error" :value="showErrors">An error occurred.</v-alert>
+          <v-alert id="error-alert" type="error" v-show="showErrors">An error occurred.</v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="toggleDialog">Cancel</v-btn>
-          <v-btn :disabled="!canSubmit" type="submit">Submit</v-btn>
+          <v-btn id='login-cancel' @click="toggleDialog">Cancel</v-btn>
+          <v-btn id='login-submit' :disabled="!canSubmit" type="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -36,7 +36,6 @@ import {
 export default {
   name: 'LoginDialog',
   props: {
-    message: String,
     visible: Boolean,
     authUrl: String
   },
@@ -47,6 +46,7 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch(SHOW_LOGIN, newValue)
+        this.$store.dispatch(CLEAR_ERRORS, {})
       }
     },
     username: {
@@ -55,6 +55,7 @@ export default {
       },
       set: function(newUsername) {
         this.$store.dispatch(SET_USER_NAME, newUsername)
+        this.$store.dispatch(CLEAR_ERRORS, {})
       }
     },
     password: {
@@ -63,6 +64,7 @@ export default {
       },
       set: function(newPassword) {
         this.$store.dispatch(SET_USER_PASSWORD, newPassword)
+        this.$store.dispatch(CLEAR_ERRORS, {})
       }
     },
     token: {
@@ -75,17 +77,27 @@ export default {
     },
     canSubmit() {
       const user = this.$store.state.user
-      return user.username && user.password
+      if (user.username && user.password) {
+        return true
+      } else {
+        return false
+      }
     },
     showErrors() {
-      return this.$store.state.errors.length
+      if (this.$store.state.errors.length) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
     toggleDialog: function() {
-      return (this.dialog = !this.dialog)
+      console.log('toggleDialog')
+      this.$store.dispatch(SHOW_LOGIN, !this.dialog)
     },
     authenticate: function() {
+      //TODO: Remove me
       console.log(
         `Authenticating user ${this.$store.state.user.username} with ${
           this.authUrl

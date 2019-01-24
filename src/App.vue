@@ -17,7 +17,7 @@
 
     <v-content>
       <Message :title="title" :message="message"/>
-      <LoginDialog :visible="this.showLoginDialog" message="Login Form Here" :authUrl="this.authUrl"></LoginDialog>
+      <LoginDialog :visible="this.showLoginDialog" :authUrl="this.authUrl"></LoginDialog>
     </v-content>
   </v-app>
 </template>
@@ -25,6 +25,7 @@
 <script>
 import Message from './components/Message'
 import LoginDialog from './components/LoginDialog'
+import { SHOW_LOGIN } from './store/constants'
 
 export default {
   name: 'App',
@@ -60,7 +61,7 @@ export default {
   },
   methods: {
     setShowLoginDialog() {
-      this.$store.dispatch('showLogin', !this.$store.state.showLoginDialog)
+      this.$store.dispatch(SHOW_LOGIN, !this.$store.state.showLoginDialog)
     }
   }
 }
