@@ -16,6 +16,11 @@
 </template>
 
 <script>
+/**
+ * A simple component to conditionally display a 'Login'
+ * or 'Logout' button. The respective click handlers are provided
+ * as props by the parent component.
+ */
 export default {
   name: 'AuthButton',
   props: {

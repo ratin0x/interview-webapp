@@ -38,9 +38,10 @@ import {
   CLEAR_ERRORS
 } from '../store/constants'
 /**
-  Component to encapsulate a simple login form in a dialog and make an http post request to the supplied authentication url.
-  Upon success, a JWT token is set on the `user` state object in the Vuex store. A failed authentication attempt will clear any
-  token currently in held in store.
+ * Component to encapsulate a simple login form in a dialog and make an http post request
+ * to the supplied authentication url. Upon success, a JWT token is set on the `user`
+ * state object in the Vuex store. A failed authentication attempt will clear any token
+ * currently in held in store.
  */
 export default {
   name: 'LoginDialog',
