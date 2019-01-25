@@ -6,13 +6,7 @@
         <span class="font-weight-light">&nbsp;WebApp</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        @click="setShowLoginDialog"
-        target="_blank"
-      >
-        <span class="mr-2">Login</span>
-      </v-btn>
+        <AuthButton :loginAction="setShowLoginDialog" :logoutAction="logout" :isLoggedIn="isLoggedIn"></AuthButton>
     </v-toolbar>
 
     <v-content>
@@ -25,13 +19,15 @@
 <script>
 import Message from './components/Message'
 import LoginDialog from './components/LoginDialog'
-import { SHOW_LOGIN } from './store/constants'
+import AuthButton from './components/AuthButton'
+import { SHOW_LOGIN, SET_USER_TOKEN, SET_USER_NAME } from './store/constants'
 
 export default {
   name: 'App',
   components: {
     Message,
-    LoginDialog
+    LoginDialog,
+    AuthButton
   },
   data() {
     return {
@@ -52,16 +48,23 @@ export default {
     },
     message() {
       const user = this.$store.state.user
-      if (user.token) {
+      if (this.isLoggedIn) {
         return `Thank you for logging in, ${user.username}.`
       } else {
-        return 'Please login to proceed'
+        return 'Please login to proceed.'
       }
+    },
+    isLoggedIn() {
+      return this.$store.state.user.token.length > 0
     }
   },
   methods: {
     setShowLoginDialog() {
       this.$store.dispatch(SHOW_LOGIN, !this.$store.state.showLoginDialog)
+    },
+    logout() {
+      this.$store.dispatch(SET_USER_TOKEN, '')
+      this.$store.dispatch(SET_USER_NAME, '')
     }
   }
 }

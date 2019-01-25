@@ -55,7 +55,7 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch(SHOW_LOGIN, newValue)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     username: {
@@ -64,7 +64,7 @@ export default {
       },
       set: function(newUsername) {
         this.$store.dispatch(SET_USER_NAME, newUsername)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     password: {
@@ -73,7 +73,7 @@ export default {
       },
       set: function(newPassword) {
         this.$store.dispatch(SET_USER_PASSWORD, newPassword)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     token: {
@@ -103,7 +103,7 @@ export default {
   methods: {
     toggleDialog: function() {
       this.$store.dispatch(SHOW_LOGIN, !this.dialog)
-      this.$store.dispatch(CLEAR_ERRORS, {})
+      this.clearErrors()
     },
     authenticate: function() {
       const postData = {
@@ -123,18 +123,25 @@ export default {
         .then(payload => {
           this.token = payload.token
           this.password = ''
-          this.$store.dispatch(CLEAR_ERRORS, {})
+          this.clearErrors()
         })
         .catch(err => {
           console.error(err)
           this.$store.dispatch(ADD_ERROR, err)
-          this.$store.dispatch(SET_USER_TOKEN, '')
+          this.token = ''
         })
         .finally(() => {
           if (!this.showErrors) {
             this.toggleDialog()
           }
         })
+    },
+    clearErrors() {
+      if (!this.$store.state.errors.length) {
+        return
+      } else {
+        this.$store.dispatch(CLEAR_ERRORS, {})
+      }
     }
   }
 }
