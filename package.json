@@ -9,7 +9,6 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "dotenv": "^6.2.0",
     "vue": "^2.5.21",
     "vuetify": "^1.3.0",
     "vuex": "^3.0.1"

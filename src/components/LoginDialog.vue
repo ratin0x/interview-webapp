@@ -93,16 +93,10 @@ export default {
   },
   methods: {
     toggleDialog: function() {
-      console.log('toggleDialog')
       this.$store.dispatch(SHOW_LOGIN, !this.dialog)
+      this.$store.dispatch(CLEAR_ERRORS, {})
     },
     authenticate: function() {
-      //TODO: Remove me
-      console.log(
-        `Authenticating user ${this.$store.state.user.username} with ${
-          this.authUrl
-        }`
-      )
       const postData = {
         username: this.username,
         password: this.password
@@ -125,6 +119,7 @@ export default {
         .catch(err => {
           console.log(err)
           this.$store.dispatch(ADD_ERROR, err)
+          this.$store.dispatch(SET_USER_TOKEN, '')
         })
         .finally(() => {
           if (!this.showErrors) {
