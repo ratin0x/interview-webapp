@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-title>Message</v-card-title>
+      <v-card-title>{{title}}</v-card-title>
       <v-card-text>{{message}}</v-card-text>
     </v-card>
   </v-container>
@@ -11,6 +11,7 @@
 export default {
   name: 'Message',
   props: {
+    title: String,
     message: String
   }
 }

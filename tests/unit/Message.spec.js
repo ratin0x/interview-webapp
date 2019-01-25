@@ -8,7 +8,14 @@ describe('Message.vue', () => {
     const wrapper = shallowMount(Message, {
       propsData: { message: message }
     })
-    console.log(wrapper)
     expect(wrapper.text()).to.include(message)
+  })
+
+  it('renders props.title when passed', () => {
+    const title = 'new title'
+    const wrapper = shallowMount(Message, {
+      propsData: { title: title }
+    })
+    expect(wrapper.text()).to.include(title)
   })
 })
