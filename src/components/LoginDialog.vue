@@ -11,9 +11,9 @@
               <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
             </v-layout>
             <v-layout fill-height="true">
-              <v-spacer v-if="!showErrors" grow="true" class="my-4"></v-spacer>
-              <v-flex v-else>
-                <v-alert id="error-alert" type="error" value="true" :outline=true class="py-1"><small>An error occurred.</small></v-alert>
+              <v-spacer id="error-spacer" v-if="!showErrors" grow="true" class="my-3" height="2"></v-spacer>
+              <v-flex v-else class="ma-0 pa-0">
+                <v-alert id="error-alert" type="error" value="true" :outline=true class="py-1 my-0"><small>An error occurred.</small></v-alert>
               </v-flex>
             </v-layout>            
           </v-container>
@@ -137,4 +137,10 @@ export default {
 </script>
 
 <style>
+/* 
+  Sets a minimum height on the error-spacer to prevent jumping when the error panel is swapped in.
+ */
+#error-spacer {
+  min-height: 2px;
+}
 </style>
