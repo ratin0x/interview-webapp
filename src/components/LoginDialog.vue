@@ -4,14 +4,19 @@
       <v-card>
         <v-card-title>Login</v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
+          <v-container grid-list-md class="py-2">
+            <label>Please enter your credentials and click 'Submit' to continue</label>            
             <v-layout wrap>
-              <label>Please enter your credentials and click 'Submit' to continue</label>
               <v-text-field label="Username" v-model="username" required></v-text-field>
               <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
             </v-layout>
+            <v-layout fill-height="true">
+              <v-spacer v-if="!showErrors" grow="true" class="my-4"></v-spacer>
+              <v-flex v-else>
+                <v-alert id="error-alert" type="error" value="true" :outline=true class="py-1"><small>An error occurred.</small></v-alert>
+              </v-flex>
+            </v-layout>            
           </v-container>
-          <v-alert id="error-alert" type="error" v-show="showErrors">An error occurred.</v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -117,7 +122,7 @@ export default {
           this.$store.dispatch(CLEAR_ERRORS, {})
         })
         .catch(err => {
-          console.log(err)
+          console.error(err)
           this.$store.dispatch(ADD_ERROR, err)
           this.$store.dispatch(SET_USER_TOKEN, '')
         })

@@ -143,7 +143,7 @@ describe('LoginDialog.vue', () => {
       })
       expect(wrapper.vm.showErrors).to.equal(false)
       const errorPanel = wrapper.find('#error-alert')
-      expect(errorPanel.isVisible()).to.be.false
+      expect(errorPanel.exists()).to.be.false
     })
   })
 })
