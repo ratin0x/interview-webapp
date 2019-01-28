@@ -21,6 +21,7 @@ import Message from './components/Message'
 import LoginDialog from './components/LoginDialog'
 import AuthButton from './components/AuthButton'
 import { SHOW_LOGIN, SET_USER_TOKEN, SET_USER_NAME } from './store/constants'
+import jwt from 'jsonwebtoken'
 
 /**
  * Simple application to authenticate with a service, display a message and logout.
@@ -46,6 +47,9 @@ export default {
         process.env.VUE_APP_AUTH_ENDPOINT
       )
     },
+    authSecret() {
+      return process.env.VUE_APP_AUTH_SECRET
+    },
     showLoginDialog() {
       return this.$store.state.showLoginDialog
     },
@@ -58,7 +62,20 @@ export default {
       }
     },
     isLoggedIn() {
-      return this.$store.state.user.token.length > 0
+      if (this.$store.state.user.token) {
+        const verified = jwt.verify(
+          this.$store.state.user.token,
+          this.authSecret
+        )
+        // If we get a defined payload containing an expiry, we'll consider the token verified
+        if (verified && verified.exp) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
     }
   },
   methods: {
