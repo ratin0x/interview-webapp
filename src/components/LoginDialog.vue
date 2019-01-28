@@ -38,9 +38,10 @@ import {
   CLEAR_ERRORS
 } from '../store/constants'
 /**
-  Component to encapsulate a simple login form in a dialog and make an http post request to the supplied authentication url.
-  Upon success, a JWT token is set on the `user` state object in the Vuex store. A failed authentication attempt will clear any
-  token currently in held in store.
+ * Component to encapsulate a simple login form in a dialog and make an http post request
+ * to the supplied authentication url. Upon success, a JWT token is set on the `user`
+ * state object in the Vuex store. A failed authentication attempt will clear any token
+ * currently in held in store.
  */
 export default {
   name: 'LoginDialog',
@@ -55,7 +56,7 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch(SHOW_LOGIN, newValue)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     username: {
@@ -64,7 +65,7 @@ export default {
       },
       set: function(newUsername) {
         this.$store.dispatch(SET_USER_NAME, newUsername)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     password: {
@@ -73,7 +74,7 @@ export default {
       },
       set: function(newPassword) {
         this.$store.dispatch(SET_USER_PASSWORD, newPassword)
-        this.$store.dispatch(CLEAR_ERRORS, {})
+        this.clearErrors()
       }
     },
     token: {
@@ -103,7 +104,7 @@ export default {
   methods: {
     toggleDialog: function() {
       this.$store.dispatch(SHOW_LOGIN, !this.dialog)
-      this.$store.dispatch(CLEAR_ERRORS, {})
+      this.clearErrors()
     },
     authenticate: function() {
       const postData = {
@@ -122,19 +123,31 @@ export default {
         })
         .then(payload => {
           this.token = payload.token
+          // Clear the password on login since we have an
+          // authentication token
           this.password = ''
-          this.$store.dispatch(CLEAR_ERRORS, {})
+          this.clearErrors()
         })
         .catch(err => {
+          // Log any errors to the console error log and store,
+          // and clear the token since this is the result of a failed login attempt
           console.error(err)
           this.$store.dispatch(ADD_ERROR, err)
-          this.$store.dispatch(SET_USER_TOKEN, '')
+          this.token = ''
         })
         .finally(() => {
+          // Keep the dialog visible if we have encountered an error
           if (!this.showErrors) {
             this.toggleDialog()
           }
         })
+    },
+    clearErrors() {
+      if (!this.$store.state.errors.length) {
+        return
+      } else {
+        this.$store.dispatch(CLEAR_ERRORS, {})
+      }
     }
   }
 }
