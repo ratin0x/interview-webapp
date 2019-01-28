@@ -14,6 +14,18 @@ will ensure you are using the correct versions of NodeJS and NPM.
 npm install
 ```
 
+### Environment
+
+This project requires a number of environment variables that can be set directly or supplied via an `.env` file in the root of the project.
+
+Sample `.env` file configuration:
+```
+VUE_APP_AUTH_HOST=http://localhost
+VUE_APP_AUTH_PORT=3333
+VUE_APP_AUTH_ENDPOINT='/login'
+VUE_APP_AUTH_SECRET=development
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
