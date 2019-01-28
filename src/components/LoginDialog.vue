@@ -123,15 +123,20 @@ export default {
         })
         .then(payload => {
           this.token = payload.token
+          // Clear the password on login since we have an
+          // authentication token
           this.password = ''
           this.clearErrors()
         })
         .catch(err => {
+          // Log any errors to the console error log and store,
+          // and clear the token since this is the result of a failed login attempt
           console.error(err)
           this.$store.dispatch(ADD_ERROR, err)
           this.token = ''
         })
         .finally(() => {
+          // Keep the dialog visible if we have encountered an error
           if (!this.showErrors) {
             this.toggleDialog()
           }

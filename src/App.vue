@@ -22,6 +22,9 @@ import LoginDialog from './components/LoginDialog'
 import AuthButton from './components/AuthButton'
 import { SHOW_LOGIN, SET_USER_TOKEN, SET_USER_NAME } from './store/constants'
 
+/**
+ * Simple application to authenticate with a service, display a message and logout.
+ */
 export default {
   name: 'App',
   components: {

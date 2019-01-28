@@ -1,11 +1,13 @@
 # interview-webapp
 
 ## Before You Start
-This project supplies an `.nvmrc` file for use with `Node Version Manager`
+This project supplies an `.nvmrc` file for use with [Node Version Manager](https://github.com/creationix/nvm)
 
 ```
 nvm use
 ```
+
+will ensure you are using the correct versions of NodeJS and NPM.
 
 ## Project setup
 ```
@@ -16,6 +18,8 @@ npm install
 ```
 npm run serve
 ```
+
+The development server will be available at [http://localhost:8080](http://localhost:8080)
 
 ### Compiles and minifies for production
 ```
